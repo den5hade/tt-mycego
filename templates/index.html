@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Загрузка файлов с Яндекс.Диска</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% if error %}
+        <p class="error">Ошибка: {{ error }}</p>
+    {% endif %}
+    
+    <form method="post">
+        <label for="public_key">Публичная ссылка:</label><br>
+        <input type="text" id="public_key" name="public_key"><br><br>
+        
+        <label for="filter_type">Тип файлов:</label><br>
+        <select id="filter_type" name="filter_type">
+            <option value="">Все</option>
+            <option value="documents">Документы</option>
+            <option value="images">Изображения</option>
+        </select><br><br>
+        
+        <button type="submit">Показать файлы</button>
+    </form>
+    
+    {% if success %}
+        <h2>Доступные файлы:</h2>
+        <form action="/download_multiple" method="post">
+            <ul>
+                {% for file in files %}
+                    <li>
+                        <input type="checkbox" name="selected_files[]" value="{{ file['path'] }}">
+                        <!--<a href="{{ url_for('download_file', file_path=file['file']) }}">{{ file['name'] }}</a>-->
+                        <a href="{{ file['preview'] }}">{{ file['name'] }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <button type="submit">Скачать выбранные</button>
+        </form>
+    {% endif %}
+</body>
+</html>

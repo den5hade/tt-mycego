@@ -79,10 +79,14 @@ def download_single(file_path):
         
         if response.status_code == 200:
             # Получите оригинальное имя файла из URL
-            filename = os.path.basename(urllib.parse.unquote(file_path))
+            # filename = os.path.basename(urllib.parse.unquote(file_path))
+            real_name = file_path.split('&')
+            for i in real_name:
+                if i.startswith('filename'):
+                    file_name = i.split('=')[-1]
             
             # Сохраните файл временно
-            temp_file_path = os.path.join(temp_dir, filename)
+            temp_file_path = os.path.join(temp_dir, file_name)
             with open(temp_file_path, 'wb') as f:
                 f.write(response.content)
             
@@ -90,9 +94,9 @@ def download_single(file_path):
             try:
                 return send_from_directory(
                     directory=temp_dir,
-                    path=filename,
+                    path=file_name,
                     as_attachment=True,
-                    download_name=filename
+                    download_name=file_name
                 )
             finally:
                 # Очистите временный файл после отправки

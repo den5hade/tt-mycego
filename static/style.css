@@ -24,3 +24,29 @@ li a {
 input[type="checkbox"] {
     margin-right: 10px;
 }
+
+.file-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.download-link {
+    margin-left: auto;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.download-link:hover {
+    background-color: #0056b3;
+}
+
+.file-item label {
+    margin: 0 10px;
+    flex-grow: 1;
+}

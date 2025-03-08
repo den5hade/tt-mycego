@@ -26,13 +26,17 @@
     
     {% if success %}
         <h2>Доступные файлы:</h2>
+        {% if files %}
+            <div class="files-list">
                 {% for file in files %}
-                    <ul>
-                        <li>
-                            <a href="{{ file['preview'] }}">{{ file['name'] }}</a>
-                        </li>
-                    </ul>
+                    <div class="file-item">
+                        <input type="checkbox" name="selected_files[]" value="{{ file.file }}" id="file-{{ loop.index }}">
+                        <label for="file-{{ loop.index }}">{{ file.name }}</label>
+                        <a href="{{ url_for('download_single', file_path=file.file) }}" class="download-link">Download</a>
+                    </div>
                 {% endfor %}
+            </div>
+        {% endif %}
     {% endif %}
 </body>
 </html>

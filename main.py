@@ -33,28 +33,30 @@ def index():
 # Функция для получения списка файлов по публичной ссылке
 def get_public_resources(public_key, filter_type=None):
     url = f'https://cloud-api.yandex.net/v1/disk/public/resources?public_key={public_key}'
-    headers = {'Authorization': publick_key}
+    headers = {'Authorization': public_key}
     
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         resources = response.json()
     else:
         raise Exception(f'Ошибка при запросе к API: {response.text}')
+
     
-    # if filter_type is not None:
-    #     if filter_type == 'documents':
-    #         allowed_extensions = ['doc', 'docx', 'pdf', 'txt']
-    #     elif filter_type == 'images':
-    #         allowed_extensions = ['jpg', 'jpeg', 'png', 'gif']
-    #     else:
-    #         allowed_extensions = []
+    if filter_type != '0':
+        if filter_type == 'documents':
+            allowed_extensions = ['doc', 'docx', 'pdf', 'txt', 'xlsx', 'xls']
+        elif filter_type == 'images':
+            allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'svg']
+        else:
+            allowed_extensions = []
         
-    #     filtered_files = [
-    #         resource for resource in resources['items']
-    #         if resource['media_type'] == 'file'
-    #            and any(resource['name'].endswith(ext) for ext in allowed_extensions)
-    #     ]
-    #     return {'items': filtered_files}
+        filtered_files = [
+            resource for resource in resources['_embedded']['items']
+            if resource['type'] == 'file'
+               and any(resource['name'].endswith(ext) for ext in allowed_extensions)
+        ]
+
+        return filtered_files
 
     return resources['_embedded']['items']
 

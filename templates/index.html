@@ -16,7 +16,7 @@
         
         <label for="filter_type">Тип файлов:</label><br>
         <select id="filter_type" name="filter_type">
-            <option value="">Все</option>
+            <option value=0>Все</option>
             <option value="documents">Документы</option>
             <option value="images">Изображения</option>
         </select><br><br>
@@ -26,18 +26,13 @@
     
     {% if success %}
         <h2>Доступные файлы:</h2>
-        <form action="/download_multiple" method="post">
-            <ul>
                 {% for file in files %}
-                    <li>
-                        <input type="checkbox" name="selected_files[]" value="{{ file['path'] }}">
-                        <!--<a href="{{ url_for('download_file', file_path=file['file']) }}">{{ file['name'] }}</a>-->
-                        <a href="{{ file['preview'] }}">{{ file['name'] }}</a>
-                    </li>
+                    <ul>
+                        <li>
+                            <a href="{{ file['preview'] }}">{{ file['name'] }}</a>
+                        </li>
+                    </ul>
                 {% endfor %}
-            </ul>
-            <button type="submit">Скачать выбранные</button>
-        </form>
     {% endif %}
 </body>
 </html>
